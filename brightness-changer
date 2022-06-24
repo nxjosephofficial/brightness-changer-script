@@ -1,0 +1,34 @@
+#!/bin/bash
+# COLORS
+# Black        0;30     Dark Gray     1;30
+# Red          0;31     Light Red     1;31
+# Green        0;32     Light Green   1;32
+# Brown/Orange 0;33     Yellow        1;33
+# Blue         0;34     Light Blue    1;34
+# Purple       0;35     Light Purple  1;35
+# Cyan         0;36     Light Cyan    1;36
+# Light Gray   0;37     White         1;37
+RED='\033[1;31m' # RED // For warning message
+NC='\033[0m' # No Color // Normal
+GREEN='\033[1;32m' # Green
+LBLUE='\033[1;34m' # Light Blue
+YELLOW='\033[1;33m' # Yellow
+whichmon=$(xrandr --prop | grep " connected" | awk '{print $1}')
+printf "${LBLUE}Your monitor is ${YELLOW}'${whichmon}'${NC}\n"
+currentbrightness=$(xrandr --prop --verbose | grep -A10 " connected" | grep "Brightness")
+printf "${LBLUE}Your current brightness is: ${YELLOW}'${currentbrightness}'${NC}\n"
+printf "${LBLUE}Enter a value to change the brightness: 1 is default${NC}\n"
+printf "${RED}WARNING: Do not set brightness to 0 value. It'll be just black.${NC}\n"
+printf """
+${GREEN}Examples:
+0.5 = 0.50
+0.6 = 0.60
+0.7 = 0.70
+0.8 = 0.80
+0.9 = 0.90
+"""
+echo 
+printf "${RED}WARNING: Do not use comma, use dot like in the examples.${NC}\n"
+read value
+xrandr --output "$whichmon" --brightness "$value"
+printf "${LBLUE}Now your brightness is set to '$value'${NC}\n"
